@@ -1,0 +1,78 @@
+version: '3.4'
+
+services:
+  webapi:
+    image: ${DOCKER_REGISTRY-}webapi
+    build:
+      context: .
+      dockerfile: WebApi/Dockerfile
+    ports:
+      - "5001:8080"
+    environment:
+      - JWT__Issuer=SecureApi
+      - JWT__Audience=SecureApiUser
+      - JWT__Key=sz8eI7OdHBrjrIo8j9nTW/rQyO1OvY0pAQ2wDKQZw/0=
+      - JWT__DurationInMinutes=60
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    networks:
+      - nw
+
+  sqlserver:
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    environment:
+      SA_PASSWORD: "saPass123"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - nw
+ 
+  elasticsearch:
+    container_name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.10.0
+    environment:
+      - node.name=elasticsearch
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false
+    volumes:
+      - v01:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    networks:
+      - nw
+    healthcheck: 
+      test: ["CMD", "curl", "-f", "http://localhost:9200"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  kibana:
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana:8.9.2
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    ports:
+      - 5601:5601
+    networks:
+      - nw
+
+volumes:
+  v01:
+    driver: local
+  sqlserver_data:
+    driver: local
+
+networks:
+  nw:
+
+

@@ -1,0 +1,102 @@
+name: dockercompose17934617627909733508
+services:
+  elasticsearch:
+    container_name: elasticsearch
+    environment:
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
+      bootstrap.memory_lock: "true"
+      discovery.type: single-node
+      node.name: elasticsearch
+      xpack.security.enabled: "false"
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -f
+        - http://localhost:9200
+      timeout: 10s
+      interval: 30s
+      retries: 5
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.10.0
+    networks:
+      nw: null
+    ports:
+      - mode: ingress
+        target: 9200
+        published: "9200"
+        protocol: tcp
+    volumes:
+      - type: volume
+        source: v01
+        target: /usr/share/elasticsearch/data
+        volume: {}
+  kibana:
+    container_name: kibana
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+        required: true
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+    image: docker.elastic.co/kibana/kibana:8.9.2
+    networks:
+      nw: null
+    ports:
+      - mode: ingress
+        target: 5601
+        published: "5601"
+        protocol: tcp
+  sqlserver:
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: saPass123
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    networks:
+      nw: null
+    ports:
+      - mode: ingress
+        target: 1433
+        published: "1433"
+        protocol: tcp
+    volumes:
+      - type: volume
+        source: sqlserver_data
+        target: /var/opt/mssql
+        volume: {}
+  webapi:
+    build:
+      context: D:\Desktop\Banco Guayaquil\WebApi
+      dockerfile: WebApi/Dockerfile
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+        required: true
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTP_PORTS: "8080"
+      JWT__Audience: SecureApiUser
+      JWT__DurationInMinutes: "60"
+      JWT__Issuer: SecureApi
+      JWT__Key: sz8eI7OdHBrjrIo8j9nTW/rQyO1OvY0pAQ2wDKQZw/0=
+    image: webapi
+    networks:
+      nw: null
+    ports:
+      - mode: ingress
+        target: 8080
+        published: "5001"
+        protocol: tcp
+      - mode: ingress
+        target: 8080
+        protocol: tcp
+networks:
+  nw:
+    name: dockercompose17934617627909733508_nw
+volumes:
+  sqlserver_data:
+    name: dockercompose17934617627909733508_sqlserver_data
+    driver: local
+  v01:
+    name: dockercompose17934617627909733508_v01
+    driver: local

@@ -1,0 +1,12 @@
+D:\Desktop\Banco Guayaquil\WebApi\Infra.IoC\bin\Debug\net8.0\Infra.IoC.deps.json
+D:\Desktop\Banco Guayaquil\WebApi\Infra.IoC\bin\Debug\net8.0\Infra.IoC.dll
+D:\Desktop\Banco Guayaquil\WebApi\Infra.IoC\bin\Debug\net8.0\Infra.IoC.pdb
+D:\Desktop\Banco Guayaquil\WebApi\Infra.IoC\obj\Debug\net8.0\Infra.IoC.csproj.AssemblyReference.cache
+D:\Desktop\Banco Guayaquil\WebApi\Infra.IoC\obj\Debug\net8.0\Infra.IoC.GeneratedMSBuildEditorConfig.editorconfig
+D:\Desktop\Banco Guayaquil\WebApi\Infra.IoC\obj\Debug\net8.0\Infra.IoC.AssemblyInfoInputs.cache
+D:\Desktop\Banco Guayaquil\WebApi\Infra.IoC\obj\Debug\net8.0\Infra.IoC.AssemblyInfo.cs
+D:\Desktop\Banco Guayaquil\WebApi\Infra.IoC\obj\Debug\net8.0\Infra.IoC.csproj.CoreCompileInputs.cache
+D:\Desktop\Banco Guayaquil\WebApi\Infra.IoC\obj\Debug\net8.0\Infra.IoC.dll
+D:\Desktop\Banco Guayaquil\WebApi\Infra.IoC\obj\Debug\net8.0\refint\Infra.IoC.dll
+D:\Desktop\Banco Guayaquil\WebApi\Infra.IoC\obj\Debug\net8.0\Infra.IoC.pdb
+D:\Desktop\Banco Guayaquil\WebApi\Infra.IoC\obj\Debug\net8.0\ref\Infra.IoC.dll
