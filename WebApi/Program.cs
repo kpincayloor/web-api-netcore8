@@ -5,7 +5,7 @@ using Infra.Data.Persistence;
 using Infra.Data.Repositories.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
-//using Infra.IoC;
+using Infra.IoC;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -52,12 +52,12 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-//builder.Services.AddInfrastructure();
-//builder.Host.ConfigureLog();
+builder.Services.AddInfrastructure();
+builder.Host.ConfigureLog();
 
 var app = builder.Build();
 
-//app.ConfigureHealthCheck();
+app.ConfigureHealthCheck();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -69,8 +69,8 @@ if (app.Environment.IsDevelopment())
 app.UseCors(x => x
                 .AllowAnyMethod()
                 .AllowAnyHeader()
-                .SetIsOriginAllowed(origin => true) // allow any origin
-                .AllowCredentials()); // allow credentials
+                .SetIsOriginAllowed(origin => true)
+                .AllowCredentials());
 
 app.UseHttpsRedirection();
 
